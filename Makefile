@@ -26,3 +26,6 @@
 
 ulagen: ulagen.o main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
+
+clean:
+	rm -f *.o ulagen
