@@ -21,3 +21,8 @@ Hopefully `make` just works.  Hopefully `make clean` does too.
 If it builds, the outputis a `ulagen` binary that ignores all arguments, reads from `/dev/urandom`, and emits on stdout a ULA /48 prefix from the `fd00::/8` block.
 
 One way to generate a collection of prefixes it to run this in a loop, a la `for i in $(seq 1 100); do ./ulagen; done | sort`.
+
+# Tested
+This has been tested on:
+1) RedHat Linux Fedora 32, with clang
+1) macOS Catalina (10.15.5), with clang
