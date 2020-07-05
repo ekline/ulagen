@@ -22,7 +22,9 @@ If it builds, the outputis a `ulagen` binary that ignores all arguments, reads f
 
 One way to generate a collection of prefixes it to run this in a loop, a la:
 
-`for i in $(seq 1 100); do ./ulagen; done | sort`.
+```
+for i in $(seq 1 100); do ./ulagen; done | sort
+```
 
 # Tested
 This has been tested on:
@@ -31,8 +33,11 @@ This has been tested on:
 
 
 # Alternatives
-One fun alternative is to [get 5 random bytes from the Internet](https://random.org/cgi-bin/randbyte?nbytes=5&format=h), prefix it with `fd`, fix up the spaces with `:`s, and suffix it with `::/48`.
+One fun alternative is to [get 5 random bytes from the Internet](https://random.org/cgi-bin/randbyte?nbytes=5&format=h), prefix it with `fd`, fix up the output with `:`s in the appropriate locations for an [IPv6 string literal](https://www.rfc-editor.org/rfc/rfc5952.html), and suffix it with `::/48`.
 
 A fun bash shell command is:
 
-`curl -s -L 'https://random.org/cgi-bin/randbyte?nbytes=5&format=h' | echo $(read; set $REPLY; echo "fd$1:$2$3:$4$5::/48")` .
+```
+curl -s -L 'https://random.org/cgi-bin/randbyte?nbytes=5&format=h' | \
+echo $(read; set $REPLY; echo "fd$1:$2$3:$4$5::/48")
+```
