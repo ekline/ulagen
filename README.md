@@ -20,9 +20,19 @@ Hopefully `make` just works.  Hopefully `make clean` does too.
 # Run
 If it builds, the outputis a `ulagen` binary that ignores all arguments, reads from `/dev/urandom`, and emits on stdout a ULA /48 prefix from the `fd00::/8` block.
 
-One way to generate a collection of prefixes it to run this in a loop, a la `for i in $(seq 1 100); do ./ulagen; done | sort`.
+One way to generate a collection of prefixes it to run this in a loop, a la:
+
+`for i in $(seq 1 100); do ./ulagen; done | sort`.
 
 # Tested
 This has been tested on:
 1) RedHat Linux Fedora 32, with clang
 1) macOS Catalina (10.15.5), with clang
+
+
+# Alternatives
+One fun alternative is to [get 5 random bytes from the Internet](https://random.org/cgi-bin/randbyte?nbytes=5&format=h), prefix it with `fd`, fix up the spaces with `:`s, and suffix it with `::/48`.
+
+A fun bash shell command is:
+
+`curl -s -L 'https://random.org/cgi-bin/randbyte?nbytes=5&format=h' | echo $(read; set $REPLY; echo "fd$1:$2$3:$4$5::/48")` .
