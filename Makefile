@@ -27,5 +27,17 @@
 ulagen: ulagen.o main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
 
+.PHONY: ula
+ula: ulagen
+	@./ulagen
+
+ulagen_test: ulagen.o test.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
+
+.PHONY: check checks test tests
+check checks test tests: ulagen_test
+	@./ulagen_test
+
+.PHONY: clean
 clean:
-	rm -f *.o ulagen
+	rm -f *.o ulagen ulagen_test
