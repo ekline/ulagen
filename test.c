@@ -136,7 +136,7 @@ struct {
     { "Injectable random functions work as expected",
       &test_injectable_random_works },
 
-    { "Injecting random function that fails yeilds error",
+    { "Injecting random function that fails yields error",
       &test_failing_injected_random_yields_error },
 
     { "Repeated calls with /dev/urandom look sensible",
