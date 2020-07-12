@@ -24,12 +24,22 @@
 #
 ###
 
+.PHONY: default
+default: check ula
+	@echo
+	@echo "Try 'make ula' or execute the ulagen binary"
+
 ulagen: ulagen.o main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
 
 .PHONY: ula
 ula: ulagen
 	@./ulagen
+
+COUNT ?= 16
+.PHONY: ulas
+ulas: ulagen
+	@for i in $$(seq 1 $(COUNT)); do ./ulagen; done | sort
 
 ulagen_test: ulagen.o test.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
