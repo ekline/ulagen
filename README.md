@@ -42,11 +42,11 @@ curl -s -L 'https://random.org/cgi-bin/randbyte?nbytes=5&format=h' | \
 echo $(read; set $REPLY; echo "fd$1:$2$3:$4$5::/48")
 ```
 
-Or:
+or:
 
 ```
 dd if=/dev/urandom  bs=1 count=5 2>/dev/null | \
 od -t x1 | \
 sed -e 's/^[^[:space:]]*[[:space:]]//' -e '1q' | \
-awk '{ printf("fd%s:%s%s:%s%s::/48\n", $1, $2, $3, $4, $5); }'
+echo $(read; set $REPLY; echo "fd$1:$2$3:$4$5::/48")
 ```
