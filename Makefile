@@ -25,9 +25,9 @@
 ###
 
 .PHONY: default
-default: check ula
+default: check ulas
 	@echo
-	@echo "Try 'make ula' or execute the ulagen binary"
+	@echo "Try 'make ula' or 'make ulas', or execute the ulagen binary"
 
 ulagen: ulagen.o main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
