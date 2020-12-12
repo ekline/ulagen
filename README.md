@@ -29,7 +29,7 @@ for i in $(seq 1 100); do ./ulagen; done | sort
 # Tested
 This has been tested on:
 1) RedHat Linux Fedora 32, with clang
-1) macOS Catalina (10.15.6), with clang
+1) macOS Catalina (10.15.6) and Big Sur (11.0.1), with clang
 
 
 # Alternatives
