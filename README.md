@@ -18,7 +18,7 @@ This simple utility was designed to make generating these random ULAs quick and 
 Hopefully `make` just works.  Hopefully `make clean` does too.
 
 # Run
-If it builds, the outputis a `ulagen` binary that ignores all arguments, reads from `/dev/urandom`, and emits on stdout a ULA /48 prefix from the `fd00::/8` block.
+If it builds, the output is a `ulagen` binary that ignores all arguments, reads from `/dev/urandom`, and emits on stdout a ULA /48 prefix from the `fd00::/8` block.
 
 One way to generate a collection of prefixes it to run this in a loop, a la:
 
