@@ -14,6 +14,9 @@ As long as ULA /48s are generated randomly the future cost of renumbering -- or 
 
 This simple utility was designed to make generating these random ULAs quick and easy.
 
+# Scope
+Although ULAs are classified in the same addressing scope as Global Unicast Addresses (GUAs), they are not expected to be globally routable (no expectation of global reachability).  The documentation on this can be confusing, and [this draft](https://datatracker.ietf.org/doc/html/draft-carpenter-6man-whats-global-00) summarizes some of the issues.
+
 # Build
 Hopefully `make` just works.  Hopefully `make clean` does too.
 
