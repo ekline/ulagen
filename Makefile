@@ -24,30 +24,54 @@
 #
 ###
 
-.PHONY: default
-default: check ulas
-	@echo
-	@echo "Try 'make ula' or 'make ulas', or execute the ulagen binary"
+implementations := $(patsubst %/Makefile, %, $(wildcard impl/*/Makefile))
 
-ulagen: ulagen.o main.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
+.PHONY: default
+default:
+	@for impl in $(implementations); do \
+	    echo ""; \
+	    echo "##"; \
+	    echo "# implementation: $${impl}"; \
+	    echo "##"; \
+	    $(MAKE) -C $${impl} $@; \
+	done
 
 .PHONY: ula
-ula: ulagen
-	@./ulagen
+ula:
+	@for impl in $(implementations); do \
+	    echo ""; \
+	    echo "##"; \
+	    echo "# implementation: $${impl}"; \
+	    echo "##"; \
+	    $(MAKE) -C $${impl} $@; \
+	done
 
-COUNT ?= 16
 .PHONY: ulas
-ulas: ulagen
-	@for i in $$(seq 1 $(COUNT)); do ./ulagen; done | sort
-
-ulagen_test: ulagen.o test.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
+ulas:
+	@for impl in $(implementations); do \
+	    echo ""; \
+	    echo "##"; \
+	    echo "# implementation: $${impl}"; \
+	    echo "##"; \
+	    $(MAKE) -C $${impl} $@; \
+	done
 
 .PHONY: check checks test tests
-check checks test tests: ulagen_test
-	@./ulagen_test
+check checks test tests:
+	@for impl in $(implementations); do \
+	    echo ""; \
+	    echo "##"; \
+	    echo "# implementation: $${impl}"; \
+	    echo "##"; \
+	    $(MAKE) -C $${impl} $@; \
+	done
 
 .PHONY: clean
 clean:
-	rm -f *.o ulagen ulagen_test
+	@for impl in $(implementations); do \
+	    echo ""; \
+	    echo "##"; \
+	    echo "# implementation: $${impl}"; \
+	    echo "##"; \
+	    $(MAKE) -C $${impl} $@; \
+	done
