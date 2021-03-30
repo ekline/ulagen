@@ -26,48 +26,8 @@
 
 implementations := $(patsubst %/Makefile, %, $(wildcard impl/*/Makefile))
 
-.PHONY: default
-default:
-	@for impl in $(implementations); do \
-	    echo ""; \
-	    echo "##"; \
-	    echo "# implementation: $${impl}"; \
-	    echo "##"; \
-	    $(MAKE) -C $${impl} $@; \
-	done
-
-.PHONY: ula
-ula:
-	@for impl in $(implementations); do \
-	    echo ""; \
-	    echo "##"; \
-	    echo "# implementation: $${impl}"; \
-	    echo "##"; \
-	    $(MAKE) -C $${impl} $@; \
-	done
-
-.PHONY: ulas
-ulas:
-	@for impl in $(implementations); do \
-	    echo ""; \
-	    echo "##"; \
-	    echo "# implementation: $${impl}"; \
-	    echo "##"; \
-	    $(MAKE) -C $${impl} $@; \
-	done
-
-.PHONY: check checks test tests
-check checks test tests:
-	@for impl in $(implementations); do \
-	    echo ""; \
-	    echo "##"; \
-	    echo "# implementation: $${impl}"; \
-	    echo "##"; \
-	    $(MAKE) -C $${impl} $@; \
-	done
-
-.PHONY: clean
-clean:
+.PHONY: default ula ulas check checks test tests clean
+default ula ulas check checks test tests clean:
 	@for impl in $(implementations); do \
 	    echo ""; \
 	    echo "##"; \
