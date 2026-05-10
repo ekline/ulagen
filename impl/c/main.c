@@ -9,7 +9,7 @@
 
 #include "ulagen.h"
 
-#define UNUSED(x) ((void)x)
+#define UNUSED(x) ((void)(x))
 
 int main(int argc, char** argv, char** envp) {
     UNUSED(argc);

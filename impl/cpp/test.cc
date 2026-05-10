@@ -3,10 +3,13 @@
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <stdlib.h>
-#include <string.h>
 
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
+#include <optional>
 #include <vector>
 
 #include "ulagen.h"
@@ -24,12 +27,13 @@ int test_injectable_random_works() {
 
     struct in6_addr in6{};
     char repr[INET6_ADDRSTRLEN + 1]{};
-    const int runs = (int)(sizeof(expectations) / sizeof(expectations[0]));
+    const int runs =
+            static_cast<int>(sizeof(expectations) / sizeof(expectations[0]));
     for (int i = 0; i < runs; i++) {
-        in6 = *(ulagen::make_ula_prefix([]() -> std::optional<uint8_t> {
-            static uint8_t b{0};
-            return b++;
-        }));
+        in6 = ulagen::make_ula_prefix([]() -> std::optional<uint8_t> {
+                  static uint8_t b{0};
+                  return b++;
+              }).value();
 
         memset(repr, 0, sizeof(repr));
         if (inet_ntop(AF_INET6, &in6, repr, sizeof(repr)) != repr) {
@@ -59,12 +63,12 @@ int test_repeated_calls_with_std_random_device() {
         ulas[i] = ulagen::make_random_ula_prefix();
 
         if (ulas[i].s6_addr[0] != 0xfd) {
-            return 1000 * i + 0xfd;
+            return static_cast<int>(1000 * i + 0xfd);
         }
 
         for (int j = 6; j < kAddrBytes; j++) {
             if (ulas[i].s6_addr[j] != 0) {
-                return 1000 * i + j;
+                return static_cast<int>(1000 * i + j);
             }
         }
     }
@@ -72,7 +76,7 @@ int test_repeated_calls_with_std_random_device() {
     for (size_t i = 0; i < ulas.size(); i++) {
         for (size_t j = i + 1; j < ulas.size(); j++) {
             if (memcmp(ulas[i].s6_addr, ulas[j].s6_addr, kAddrBytes) == 0) {
-                return 10 * i + j;
+                return static_cast<int>(10 * i + j);
             }
         }
     }

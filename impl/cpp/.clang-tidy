@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: MIT
+#
+# clang-tidy configuration for impl/cpp.
+#
+# Disabled checks, with rationale:
+#   - clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling:
+#     wants memcpy_s / memset_s (C11 Annex K), not widely available.
+#   - modernize-use-trailing-return-type: purely stylistic.
+#   - modernize-avoid-c-arrays: would force std::array for the inet_ntop
+#     output buffer, which loses interop with the C API.
+#   - bugprone-unchecked-optional-access: the check treats both *opt and
+#     opt.value() as unsafe unless preceded by an explicit has_value()
+#     check, but our callsites use callbacks (random_device,
+#     monotonic counter) that are infallible by construction.
+---
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  modernize-*,
+  performance-*,
+  portability-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -modernize-use-trailing-return-type,
+  -modernize-avoid-c-arrays,
+  -bugprone-unchecked-optional-access
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'

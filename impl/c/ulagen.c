@@ -34,7 +34,7 @@ static size_t dev_urandom_bytes(uint8_t* dst, int num_bytes) {
     }
 
     const size_t read = fread(dst, 1, num_bytes, fp);
-    fclose(fp);
+    (void)fclose(fp);
     return read;
 }
 

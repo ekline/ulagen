@@ -9,7 +9,7 @@
 
 #include "ulagen.h"
 
-#define UNUSED(x) ((void)x)
+#define UNUSED(x) ((void)(x))
 
 static const int kAddrBytes = 16;
 

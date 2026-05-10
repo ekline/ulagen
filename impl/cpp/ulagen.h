@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2021 Erik Kline
 
-#ifndef ULAGEN_H__
-#define ULAGEN_H__
+#ifndef ULAGEN_H_
+#define ULAGEN_H_
 
 #include <netinet/in.h>
 
 #include <cstdint>
+#include <cstdlib>
 #include <functional>
 #include <optional>
 #include <random>
@@ -20,7 +21,7 @@ namespace ulagen {
  * Returns a struct in6_addr on success, std::nullopt otherwise.
  */
 inline std::optional<struct in6_addr> make_ula_prefix(
-        std::function<std::optional<uint8_t>(void)> get_random_byte) {
+        const std::function<std::optional<uint8_t>(void)>& get_random_byte) {
     struct in6_addr ip6{};
     ip6.s6_addr[0] = 0xfd;
 
@@ -49,16 +50,24 @@ inline std::optional<struct in6_addr> make_ula_prefix(
  *
  * Returns a struct in6_addr.
  */
-inline struct in6_addr make_random_ula_prefix() {
-    return *(make_ula_prefix([]() -> std::optional<uint8_t> {
+inline struct in6_addr make_random_ula_prefix() noexcept {
+    auto opt = make_ula_prefix([]() -> std::optional<uint8_t> {
         static thread_local std::random_device rd{};
         static thread_local std::uniform_int_distribution<unsigned int> dist(
                 0, 255);
 
         return static_cast<uint8_t>(dist(rd));
-    }));
+    });
+
+    // The callback above always returns a value, so make_ula_prefix
+    // never returns std::nullopt here. Abort defensively if that ever
+    // changes; this keeps make_random_ula_prefix() noexcept-clean.
+    if (!opt.has_value()) {
+        std::abort();
+    }
+    return *opt;
 }
 
 }  // namespace ulagen
 
-#endif /* ULAGEN_H__ */
+#endif /* ULAGEN_H_ */

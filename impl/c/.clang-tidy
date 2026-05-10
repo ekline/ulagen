@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: MIT
+#
+# clang-tidy configuration for impl/c.
+#
+# Disabled checks, with rationale:
+#   - clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling:
+#     wants memcpy_s / memset_s (C11 Annex K), which is optional and
+#     not widely available in practice.
+#   - bugprone-easily-swappable-parameters: false-positive on
+#     int main(int, char**, char**) where argv and envp are both char**.
+---
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  performance-*,
+  portability-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -bugprone-easily-swappable-parameters
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
