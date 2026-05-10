@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - TBD
+## [1.0.0] - 2026-05-09
+
+First stable release.
 
 ### Added
 - Library API exposing `Ipv6Prefix`, `generate_ula_prefix`, and
@@ -25,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the `rand::Rng` trait bound (the methods previously on `rand::RngCore` are
   required methods on `Rng` in `rand` 0.9+).
 - Crate now uses Rust **edition 2024**; MSRV raised to **1.85**.
+
+### Removed
+- The 0.1.0 `make_ula_prefix` function. Use `generate_ula_prefix` instead.
 
 ## [0.1.0] - 2024-08-31
 

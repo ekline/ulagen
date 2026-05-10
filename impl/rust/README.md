@@ -61,7 +61,7 @@ Library:
 
 ```toml
 [dependencies]
-ulagen = "0.2"
+ulagen = "1"
 ```
 
 CLI:
