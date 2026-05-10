@@ -1,7 +1,40 @@
 [package]
 name = "ulagen"
-version = "0.1.0"
-edition = "2021"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["Erik Kline"]
+description = "Generate random IPv6 Unique Local Address (ULA) /48 prefixes per RFC 4193, as a library and CLI."
+documentation = "https://docs.rs/ulagen"
+homepage = "https://github.com/ekline/ulagen"
+repository = "https://github.com/ekline/ulagen"
+readme = "README.md"
+license = "MIT"
+keywords = ["ipv6", "ula", "rfc4193", "networking", "cli"]
+categories = ["network-programming", "command-line-utilities"]
+include = [
+    "src/**/*.rs",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+]
+
+[lib]
+name = "ulagen"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ulagen"
+path = "src/bin/ulagen.rs"
 
 [dependencies]
-rand = "0.8.5"
+rand = "0.10"
+
+[lints.rust]
+missing_docs = "deny"
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"

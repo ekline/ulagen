@@ -14,44 +14,57 @@
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
 ###
 
-#CXXFLAGS := --std=c++17
+CARGO ?= cargo
 
 .PHONY: default
-default: check ulas
+default: build ulas
 	@echo
-	@echo "Try 'make ula' or 'make ulas', or execute the ulagen binary"
+	@echo "Try 'make ula' or 'make ulas COUNT=N', or run target/release/ulagen"
 
-ulagen: src/main.rs
-	@cargo build --release
+.PHONY: build
+build:
+	@$(CARGO) build --release
 
+# Force rebuild before running.
 .PHONY: ula
-ula: ulagen
+ula: build
 	@./target/release/ulagen
-
 
 COUNT ?= 16
 .PHONY: ulas
-ulas: ulagen
-	@for i in $$(seq 1 $(COUNT)); do ./target/release/ulagen; done | sort
-
-#ulagen_test: test.o
-#	$(CXX) $(CXXFLAGS) $(LDFLAGS) -Wall -I. -o $@ $^
+ulas: build
+	@./target/release/ulagen -n $(COUNT) | sort
 
 .PHONY: check checks test tests
-#check checks test tests: ulagen_test
-#	@./ulagen_test
 check checks test tests:
+	@$(CARGO) test
+
+.PHONY: fmt
+fmt:
+	@$(CARGO) fmt --all
+
+.PHONY: fmt-check
+fmt-check:
+	@$(CARGO) fmt --all -- --check
+
+.PHONY: clippy
+clippy:
+	@$(CARGO) clippy --all-targets -- -D warnings
+
+.PHONY: doc
+doc:
+	@$(CARGO) doc --no-deps
+
+.PHONY: package
+package:
+	@$(CARGO) package --list
+
+.PHONY: publish-dry-run
+publish-dry-run:
+	@$(CARGO) publish --dry-run
 
 .PHONY: clean
 clean:
-	cargo clean
+	@$(CARGO) clean
