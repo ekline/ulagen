@@ -35,7 +35,6 @@ inline std::optional<struct in6_addr> make_ula_prefix(
     return ip6;
 }
 
-
 /**
  * Generates a ULA /48 prefix in fd00::/8, drawing the requisite 40 bits
  * from std::random_device (the platform's CSPRNG on conforming
@@ -62,4 +61,4 @@ inline struct in6_addr make_random_ula_prefix() {
 
 }  // namespace ulagen
 
-#endif   /* ULAGEN_H__ */
+#endif /* ULAGEN_H__ */

@@ -13,8 +13,7 @@
  * Returns 0 on success, non-zero otherwise.
  */
 int make_ula_prefix(size_t (*rand_bytes)(uint8_t*, int num_bytes),
-                    struct in6_addr *in6);
-
+                    struct in6_addr* in6);
 
 /**
  * Generates a ULA /48 prefix in fd00::/8 using an injected function
@@ -22,6 +21,6 @@ int make_ula_prefix(size_t (*rand_bytes)(uint8_t*, int num_bytes),
  *
  * Returns 0 on success, non-zero otherwise.
  */
-int make_random_ula_prefix(struct in6_addr *in6);
+int make_random_ula_prefix(struct in6_addr* in6);
 
-#endif   /* ULAGEN_H__ */
+#endif /* ULAGEN_H__ */

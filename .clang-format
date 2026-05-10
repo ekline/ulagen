@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Covers all C and C++ sources in this repository.
+# clang-format walks up from each source file, so a single root config
+# applies to impl/c/, impl/cpp/, and any future C/C++ implementations.
+BasedOnStyle: Google
+IndentWidth: 4
+ContinuationIndentWidth: 8

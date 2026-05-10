@@ -9,7 +9,7 @@
 #include <string.h>
 
 int make_ula_prefix(size_t (*rand_bytes)(uint8_t*, int num_bytes),
-                    struct in6_addr *in6) {
+                    struct in6_addr* in6) {
     struct in6_addr ip6;
 
     if ((rand_bytes == NULL) || (in6 == NULL)) {
@@ -38,6 +38,6 @@ static size_t dev_urandom_bytes(uint8_t* dst, int num_bytes) {
     return read;
 }
 
-int make_random_ula_prefix(struct in6_addr *in6) {
+int make_random_ula_prefix(struct in6_addr* in6) {
     return make_ula_prefix(&dev_urandom_bytes, in6);
 }

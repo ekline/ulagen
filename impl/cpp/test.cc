@@ -12,6 +12,7 @@
 #include "ulagen.h"
 
 int test_injectable_random_works() {
+    // clang-format off
     const char* const expectations[] = {
         "fd00:102:304::",
         "fd05:607:809::",
@@ -19,24 +20,24 @@ int test_injectable_random_works() {
         "fd0f:1011:1213::",
         "fd14:1516:1718::",
     };
+    // clang-format on
 
     struct in6_addr in6{};
-    char repr[INET6_ADDRSTRLEN+1]{};
-    const int runs = (int) (sizeof(expectations) / sizeof(expectations[0]));
+    char repr[INET6_ADDRSTRLEN + 1]{};
+    const int runs = (int)(sizeof(expectations) / sizeof(expectations[0]));
     for (int i = 0; i < runs; i++) {
-        in6 = *(ulagen::make_ula_prefix(
-                []() -> std::optional<uint8_t> {
-                    static uint8_t b{0};
-                    return b++;
-                }));
+        in6 = *(ulagen::make_ula_prefix([]() -> std::optional<uint8_t> {
+            static uint8_t b{0};
+            return b++;
+        }));
 
         memset(repr, 0, sizeof(repr));
         if (inet_ntop(AF_INET6, &in6, repr, sizeof(repr)) != repr) {
-            return 10*i + 1;
+            return 10 * i + 1;
         }
 
         if (strncmp(repr, expectations[i], sizeof(repr)) != 0) {
-            return 10*i + 2;
+            return 10 * i + 2;
         }
     }
 
@@ -45,7 +46,7 @@ int test_injectable_random_works() {
 
 int test_failing_injected_random_yields_error() {
     return ulagen::make_ula_prefix(
-            []() -> std::optional<uint8_t> { return std::nullopt; })
+                   []() -> std::optional<uint8_t> { return std::nullopt; })
             .has_value();
 }
 
@@ -58,12 +59,12 @@ int test_repeated_calls_with_std_random_device() {
         ulas[i] = ulagen::make_random_ula_prefix();
 
         if (ulas[i].s6_addr[0] != 0xfd) {
-            return 1000*i + 0xfd;
+            return 1000 * i + 0xfd;
         }
 
         for (int j = 6; j < kAddrBytes; j++) {
             if (ulas[i].s6_addr[j] != 0) {
-                return 1000*i + j;
+                return 1000 * i + j;
             }
         }
     }
@@ -71,7 +72,7 @@ int test_repeated_calls_with_std_random_device() {
     for (size_t i = 0; i < ulas.size(); i++) {
         for (size_t j = i + 1; j < ulas.size(); j++) {
             if (memcmp(ulas[i].s6_addr, ulas[j].s6_addr, kAddrBytes) == 0) {
-                return 10*i + j;
+                return 10 * i + j;
             }
         }
     }
@@ -83,16 +84,15 @@ struct {
     const char* description;
     int (*test_function)();
 } tests[] = {
-    { "Injectable random functions work as expected",
-      &test_injectable_random_works },
+        {"Injectable random functions work as expected",
+         &test_injectable_random_works},
 
-    { "Injecting random function that fails yields error",
-      &test_failing_injected_random_yields_error },
+        {"Injecting random function that fails yields error",
+         &test_failing_injected_random_yields_error},
 
-    { "Repeated calls with std::random_device look sensible",
-      &test_repeated_calls_with_std_random_device },
+        {"Repeated calls with std::random_device look sensible",
+         &test_repeated_calls_with_std_random_device},
 };
-
 
 int main(int, char**, char**) {
     const int num_tests = static_cast<int>(sizeof(tests) / sizeof(tests[0]));

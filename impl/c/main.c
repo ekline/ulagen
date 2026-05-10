@@ -9,7 +9,7 @@
 
 #include "ulagen.h"
 
-#define UNUSED(x) ((void) x)
+#define UNUSED(x) ((void)x)
 
 int main(int argc, char** argv, char** envp) {
     UNUSED(argc);
@@ -21,7 +21,7 @@ int main(int argc, char** argv, char** envp) {
         return EXIT_FAILURE;
     }
 
-    char ula_str[INET6_ADDRSTRLEN+1];
+    char ula_str[INET6_ADDRSTRLEN + 1];
     memset(ula_str, 0, sizeof(ula_str));
     if (inet_ntop(AF_INET6, &ula, ula_str, sizeof(ula_str)) != ula_str) {
         return EXIT_FAILURE;
