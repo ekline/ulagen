@@ -51,3 +51,16 @@ jobs:
       - run: clang++ --version
       - run: make check
       - run: make ula
+
+  lint:
+    name: clang-format + clang-tidy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
+      - run: clang-format --version && clang-tidy --version
+      - name: clang-format (dry-run)
+        run: clang-format --dry-run -Werror *.cc *.h
+      - name: clang-tidy
+        run: clang-tidy *.cc -- -x c++ -std=c++17 -I.
