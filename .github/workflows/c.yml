@@ -55,12 +55,27 @@ jobs:
   lint:
     name: clang-format + clang-tidy
     runs-on: ubuntu-latest
+    # Pin to a specific LLVM major version so CI matches the version
+    # used to author the .clang-format / .clang-tidy configs and to
+    # format the existing source. Bumping this is intentional and
+    # may require running clang-format-${LLVM_VERSION} -i locally.
+    env:
+      LLVM_VERSION: '22'
     steps:
       - uses: actions/checkout@v5
-      - name: Install tools
-        run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
-      - run: clang-format --version && clang-tidy --version
-      - name: clang-format (dry-run)
-        run: clang-format --dry-run -Werror *.c *.h
+      - name: Install pinned clang-format and clang-tidy from apt.llvm.org
+        run: |
+          set -eux
+          wget -qO /tmp/llvm.sh https://apt.llvm.org/llvm.sh
+          chmod +x /tmp/llvm.sh
+          sudo /tmp/llvm.sh "${LLVM_VERSION}"
+          sudo apt-get install -y "clang-format-${LLVM_VERSION}" "clang-tidy-${LLVM_VERSION}"
+      - run: |
+          clang-format-${LLVM_VERSION} --version
+          clang-tidy-${LLVM_VERSION} --version
+      - name: clang-format check (formats in place, fails on diff)
+        run: |
+          clang-format-${LLVM_VERSION} -i *.c *.h
+          git diff --exit-code -- *.c *.h
       - name: clang-tidy
-        run: clang-tidy *.c -- -std=c11 -I.
+        run: clang-tidy-${LLVM_VERSION} *.c -- -std=c11 -I.
