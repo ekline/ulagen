@@ -1,9 +1,3 @@
-# NOTE: this file is currently nested inside the crate directory.
-# Before it will run, move it up to the repository root so it lives at
-#   <repo>/.github/workflows/rust.yml
-#
-# It runs from the `impl/rust` working directory.
-
 name: rust
 
 on:
@@ -19,7 +13,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTFLAGS: -D warnings
 
 defaults:
   run:
@@ -35,7 +28,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         toolchain: [stable, "1.85"]  # MSRV
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
@@ -47,7 +40,7 @@ jobs:
     name: fmt + clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
@@ -60,6 +53,6 @@ jobs:
     env:
       RUSTDOCFLAGS: -D warnings
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo doc --no-deps
