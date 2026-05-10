@@ -1,0 +1,53 @@
+name: c
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'impl/c/**'
+      - '.github/workflows/c.yml'
+  pull_request:
+    paths:
+      - 'impl/c/**'
+      - '.github/workflows/c.yml'
+
+defaults:
+  run:
+    working-directory: impl/c
+
+jobs:
+  test:
+    name: test (${{ matrix.os }} / ${{ matrix.cc }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+          - os: ubuntu-latest
+            cc: clang
+          - os: macos-latest
+            cc: clang
+    env:
+      CC: ${{ matrix.cc }}
+    steps:
+      - uses: actions/checkout@v5
+      - run: ${{ matrix.cc }} --version
+      - run: make check
+      - run: make ula
+
+  sanitizers:
+    name: asan + ubsan (ubuntu / clang)
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CFLAGS: -fsanitize=address,undefined -fno-omit-frame-pointer -O1 -g
+      LDFLAGS: -fsanitize=address,undefined
+      ASAN_OPTIONS: detect_leaks=1
+      UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+    steps:
+      - uses: actions/checkout@v5
+      - run: clang --version
+      - run: make check
+      - run: make ula

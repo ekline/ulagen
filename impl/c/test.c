@@ -27,7 +27,7 @@ size_t monotonic_nonrandom(uint8_t* dst, int num_bytes) {
     return num_bytes;
 }
 
-int test_injectable_random_works() {
+int test_injectable_random_works(void) {
     const char* const expectations[] = {
         "fd00:102:304::",
         "fd05:607:809::",
@@ -64,7 +64,7 @@ size_t failing_random(uint8_t* dst, int num_bytes) {
     return ((num_bytes > 1) ? (num_bytes - 1) : 0);
 }
 
-int test_failing_injected_random_yields_error() {
+int test_failing_injected_random_yields_error(void) {
     struct in6_addr in6;
 
     if (make_ula_prefix(&failing_random, &in6) != 0) {
@@ -73,7 +73,7 @@ int test_failing_injected_random_yields_error() {
     return 1;
 }
 
-int test_repeated_calls_with_dev_urandom() {
+int test_repeated_calls_with_dev_urandom(void) {
     struct in6_addr ulas[9];
 
     const int num_ulas = (int) (sizeof(ulas) / sizeof(ulas[0]));
@@ -108,7 +108,7 @@ int test_repeated_calls_with_dev_urandom() {
 
 struct {
     const char* description;
-    int (*test_function)();
+    int (*test_function)(void);
 } tests[] = {
     { "Injectable random functions work as expected",
       &test_injectable_random_works },
